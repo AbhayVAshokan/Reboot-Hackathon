@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image:
-                    ExactAssetImage('lib/assets/splash_screen_background.jpg'),
+                    ExactAssetImage('lib/assets/images/splash_screen_background.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     children: <Widget>[
                       ClipOval(
                         child: Image.asset(
-                          'lib/assets/logo_foreground.png',
+                          'lib/assets/images/logo_foreground.png',
                           width: 150,
                           height: 150,
                           fit: BoxFit.contain,

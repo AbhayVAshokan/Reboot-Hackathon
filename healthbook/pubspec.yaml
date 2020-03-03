@@ -20,6 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^0.3.9
+  flutter_screenutil: ^0.5.2
+  intl: ^0.16.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,8 +45,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/splash_screen_background.jpg
-    - lib/assets/logo_foreground.png
+    - lib/assets/images/splash_screen_background.jpg
+    - lib/assets/images/logo_foreground.png
+    - lib/assets/images/image_01.png
+    - lib/assets/images/image_02.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -57,11 +61,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: lib/assets/fonts/CustomIcons.ttf
+
+    - family: Signika
+      fonts:
+        - asset: lib/assets/fonts/Signika-Bold.ttf
+        - asset: lib/assets/fonts/Signika-Regular.ttf
+        
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
