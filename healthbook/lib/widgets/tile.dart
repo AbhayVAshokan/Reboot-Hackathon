@@ -55,11 +55,13 @@ class Tile extends StatelessWidget {
                   color: this.textColor,
                 ),
               ),
-              Text(
-                this.subtitle,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: this.textColor,
+              FittedBox(
+                child: Text(
+                  this.subtitle,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: this.textColor,
+                  ),
                 ),
               ),
             ],

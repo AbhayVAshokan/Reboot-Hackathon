@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "572538696342",
+    "firebase_url": "https://reboot-7d5db.firebaseio.com",
+    "project_id": "reboot-7d5db",
+    "storage_bucket": "reboot-7d5db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572538696342:android:41226e22406f393b1d88b7",
+        "android_client_info": {
+          "package_name": "com.example.healthbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572538696342-s1723jko2pvd4lbrch2unrf7qcm6vc8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthbook",
+            "certificate_hash": "9b74fdfe522042900bffa28918afff8208ccfafd"
+          }
+        },
+        {
+          "client_id": "572538696342-7b848jm1aeusav610o0152ba1k6rdc3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdnVZA5KrWz7gH37Dy8a80NP65qCU3elk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572538696342-7b848jm1aeusav610o0152ba1k6rdc3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
