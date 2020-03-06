@@ -6,6 +6,7 @@ import '../widgets/FormCard.dart';
 import '../widgets/SocialIcon.dart';
 import '../widgets/CustomIcons.dart';
 import './home_screen.dart';
+import './signup.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -237,7 +238,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               'New User? ',
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                              },
                               child: Text('SignUp',
                                   style: TextStyle(
                                     color: Color(0xFF5d74e3),

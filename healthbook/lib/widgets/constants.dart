@@ -6,3 +6,6 @@ const kTileDefaultBorderColor = Color(0xFFE8EAEE);
 
 const kSwatchBlueColor = Color(0xFF52BEFF);
 const kSwatchPinkColor = Color(0xFFFE385E);
+
+final String signIn = 'signin';
+final String signUp ='signup';
