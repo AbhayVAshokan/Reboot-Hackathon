@@ -1,3 +1,5 @@
+// Screen to implement User Sign Up
+
 import 'package:flutter/material.dart';
 
 import '../widgets/CustomIcons.dart';
@@ -7,6 +9,7 @@ import '../widgets/custom_shape.dart';
 import '../widgets/customappbar.dart';
 import '../widgets/responsive_ui.dart';
 import '../widgets/textformfield.dart';
+import '../widgets/drop_down.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -20,6 +23,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  // Variables to check whether the contents are entered or not
+  bool _validateFirstName = true,
+      _validateLastName = true,
+      _validateEmail = true,
+      _validateMobileNumber = true,
+      _validationHeight = true,
+      _validationWeight = true,
+      _validateConfirm = true;
+
+  // TextEditingControllers for all textFields.
+  final passwordController = TextEditingController();
+  final confirmController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final mobileNumberController = TextEditingController();
+  var gender = "Male";
 
   @override
   Widget build(BuildContext context) {
@@ -106,14 +129,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             shape: BoxShape.circle,
           ),
           child: GestureDetector(
-              onTap: () {
-                print('Adding photo');
-              },
-              child: Icon(
-                Icons.add_a_photo,
-                size: _large ? 40 : (_medium ? 33 : 31),
-                color: Colors.red[200],
-              )),
+            onTap: () {
+              // getImage();
+            },
+            child: gender == "Male"
+                ? Image.asset('healthbook/lib/assets/images/man_face.jpeg')
+                : Image.asset('healthbook/lib/assets/images/female_face.png'),
+          ),
         ),
       ],
     );
@@ -126,6 +148,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Form(
         child: Column(
           children: <Widget>[
+            genderDropDown(),
+            SizedBox(height: _height / 60.0),
             firstNameTextFormField(),
             SizedBox(height: _height / 60.0),
             lastNameTextFormField(),
@@ -147,12 +171,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Widget genderDropDown() {
+    var _width = MediaQuery.of(context).size.width;
+    var _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    var large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    var medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+
+    var selectedUser;
+
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: large ? 12 : (medium ? 10 : 8),
+      child: Center(
+        child: DropdownButton<Item>(
+          hint: Text("Select Gender (ലിംഗഭേദം)"),
+          value: selectedUser,
+          onChanged: (Item value) {
+            setState(() {
+              selectedUser = value;
+            });
+          },
+          items: users.map((Item user) {
+            return DropdownMenuItem<Item>(
+              value: user,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Row(
+                  children: <Widget>[
+                    user.icon,
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      user.name,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  // Set of widgets used to create the textFields.
   Widget confirmPasswordTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
       icon: Icons.lock,
-      hint: "Confirm Password",
+      hint: "Confirm Password (പാസ്വേഡ്)",
       obscureText: true,
+      textEditingController: confirmController,
+      errorText: _validateConfirm ? null : "Password do not match",
     );
   }
 
@@ -160,7 +232,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.number,
       icon: Icons.linear_scale,
-      hint: "Height (in cm)",
+      hint: "Height (in cm) (ഉയരം)",
+      textEditingController: heightController,
+      errorText: _validationHeight ? null : "Enter valid height",
     );
   }
 
@@ -168,7 +242,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.number,
       icon: Icons.fastfood,
-      hint: "Weight (in kg)",
+      hint: "Weight (in kg) (ഭാരം)",
+      textEditingController: weightController,
+      errorText: _validationWeight ? null : "Enter valid weight",
     );
   }
 
@@ -176,7 +252,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.text,
       icon: Icons.person,
-      hint: "First Name",
+      hint: "First Name (പേരിന്റെ ആദ്യഭാഗം)",
+      textEditingController: firstNameController,
+      errorText: _validateFirstName ? null : "Enter valid first name",
     );
   }
 
@@ -184,7 +262,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.text,
       icon: Icons.person,
-      hint: "Last Name",
+      hint: "Last Name (പേരിന്റെ അവസാന ഭാഗം)",
+      textEditingController: lastNameController,
+      errorText: _validateLastName ? null : "Enter valid last name",
     );
   }
 
@@ -192,7 +272,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.emailAddress,
       icon: Icons.email,
-      hint: "Email ID",
+      hint: "Email ID (ഇ - മെയിൽ ഐഡി)",
+      textEditingController: emailController,
+      errorText: _validateEmail ? null : "Enter valid email id",
     );
   }
 
@@ -200,7 +282,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return CustomTextField(
       keyboardType: TextInputType.number,
       icon: Icons.phone,
-      hint: "Mobile Number",
+      hint: "Mobile Number (മൊബൈൽ നമ്പർ)",
+      textEditingController: mobileNumberController,
+      errorText: _validateMobileNumber ? null : "Enter valid mobile number",
     );
   }
 
@@ -209,7 +293,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       obscureText: true,
       icon: Icons.lock,
-      hint: "Password",
+      hint: "Password (പാസ്വേഡ്)",
+      textEditingController: passwordController,
+      errorText: checkStrongPassword(),
     );
   }
 
@@ -238,18 +324,118 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  bool isDigit(String s, int idx) =>
+      "0".compareTo(s[idx]) <= 0 && "9".compareTo(s[idx]) >= 0;
+
+  // Function to check whether the password is strong or not.
+  String checkStrongPassword() {
+    if (passwordController.text.isEmpty) {
+      return "Password cannot be empty";
+    }
+    var password = passwordController.text.toString();
+
+    var flags = [0, 0, 0, 0];
+    for (int i = 0; i < password.length; i++) {
+      if (allNumbers.contains(password[i])) {
+        flags[0] = 1;
+      }
+      if (allCapitals.contains(password[i])) {
+        flags[1] = 1;
+      }
+      if (allSmalls.contains(password[i])) {
+        flags[2] = 1;
+      }
+      if (allSymbols.contains(password[i])) {
+        flags[3] = 1;
+      }
+    }
+
+    if (flags[0] == 0) {
+      return "Password must contain atleast one digit";
+    } else if (flags[1] == 0) {
+      return "Password must contain atleast one capital letter";
+    } else if (flags[2] == 0) {
+      return "Password must contain atleast one small letter";
+    } else if (flags[3] == 0) {
+      return "Password must contain atleast one special character";
+    } else if (password.length < 8) {
+      return "Password must contain atleast 8 letters";
+    } else {
+      return null;
+    }
+  }
+
+  // SIGN UP raised button.
   Widget button() {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         print("Routing to your account");
+        setState(() {
+          if (firstNameController.text.isEmpty) {
+            _validateFirstName = false;
+          } else {
+            _validateFirstName = true;
+          }
+
+          if (lastNameController.text.isEmpty) {
+            _validateLastName = false;
+          } else {
+            _validateLastName = true;
+          }
+
+          if (emailController.text.isEmpty) {
+            _validateEmail = false;
+          } else if (!(emailController.text.contains('@') &&
+              (emailController.text.contains('.com') ||
+                  emailController.text.contains('.in')))) {
+            _validateEmail = false;
+          } else {
+            _validateEmail = true;
+          }
+
+          if (mobileNumberController.text.isEmpty) {
+            _validateMobileNumber = false;
+          } else {
+            _validateMobileNumber = true;
+          }
+
+          if (mobileNumberController.text.isEmpty) {
+            _validateMobileNumber = false;
+          } else if (mobileNumberController.text.length != 10) {
+            _validateMobileNumber = false;
+          } else {
+            _validateMobileNumber = true;
+          }
+
+          if (heightController.text.isEmpty) {
+            _validationHeight = false;
+          } else if (int.parse(heightController.text) < 0) {
+            _validationHeight = false;
+          } else {
+            _validationHeight = true;
+          }
+
+          if (weightController.text.isEmpty) {
+            _validationWeight = false;
+          } else if (int.parse(heightController.text) < 0) {
+            _validationWeight = false;
+          } else {
+            _validationWeight = true;
+          }
+
+          if (confirmController.text.compareTo(passwordController.text) == 0) {
+            _validateConfirm = true;
+          } else {
+            _validateConfirm = false;
+          }
+        });
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-//        height: _height / 20,
         width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),

@@ -55,12 +55,14 @@ class FormCard extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'Enter Username',
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
+
                 ),
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(
                     fontSize: ScreenUtil.getInstance().setSp(30),
                   ),
                 ),
+                keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),

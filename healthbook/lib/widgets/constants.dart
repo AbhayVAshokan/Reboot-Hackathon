@@ -1,3 +1,5 @@
+// Constants used throughout the program
+
 import 'package:flutter/material.dart';
 
 const kTileDefaultBackgroundColor = Colors.white;
@@ -9,3 +11,8 @@ const kSwatchPinkColor = Color(0xFFFE385E);
 
 final String signIn = 'signin';
 final String signUp ='signup';
+
+final allCapitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+final allSmalls = "abcdefghijklmnopqrstuvwxyz";
+final allSymbols = "!@#^&*()+=-./";
+final allNumbers = "1234567890";

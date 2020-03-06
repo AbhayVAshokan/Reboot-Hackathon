@@ -6,7 +6,7 @@ import '../widgets/FormCard.dart';
 import '../widgets/SocialIcon.dart';
 import '../widgets/CustomIcons.dart';
 import './home_screen.dart';
-import './signup.dart';
+import './signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  // Remember me radio button
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
         height: 16.0,
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
           ..init(context);
 
-    return new Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         body: Stack(

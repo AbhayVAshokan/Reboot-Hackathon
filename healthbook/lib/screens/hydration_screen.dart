@@ -1,8 +1,15 @@
+// Screen to display contents of amount of water consumed.
+
 import 'package:flutter/material.dart';
 import '../widgets/number_tile.dart';
 import '../widgets/constants.dart';
 
-class HydrationScreen extends StatelessWidget {
+class HydrationScreen extends StatefulWidget {
+  @override
+  _HydrationScreenState createState() => _HydrationScreenState();
+}
+
+class _HydrationScreenState extends State<HydrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,50 +99,6 @@ class HydrationScreen extends StatelessWidget {
                           child: NumberTile(
                             content: '+',
                             textColor: kSwatchBlueColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
                           ),
                         ),
                         Expanded(

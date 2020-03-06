@@ -1,3 +1,5 @@
+// Customization of each tile/card inside the home_screen
+
 import 'package:flutter/material.dart';
 
 class Tile extends StatelessWidget {

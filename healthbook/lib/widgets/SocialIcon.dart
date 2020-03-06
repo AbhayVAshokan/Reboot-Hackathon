@@ -1,3 +1,5 @@
+// For each social icons in login and sign up screens.
+
 import 'package:flutter/material.dart';
 
 class SocialIcon extends StatelessWidget {
