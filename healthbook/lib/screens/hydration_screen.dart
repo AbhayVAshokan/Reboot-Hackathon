@@ -10,6 +10,7 @@ class HydrationScreen extends StatefulWidget {
 }
 
 class _HydrationScreenState extends State<HydrationScreen> {
+  var cupCount = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +44,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
               ),
             ),
             Text(
-              '4 of 12',
+              '$cupCount of 12',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
@@ -68,21 +69,42 @@ class _HydrationScreenState extends State<HydrationScreen> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: NumberTile(
-                            content: '1',
-                            textColor: kTileDefaultTextColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 1;
+                              });
+                            },
+                            child: NumberTile(
+                              content: '1',
+                              textColor: kTileDefaultTextColor,
+                            ),
                           ),
                         ),
                         Expanded(
+                            child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              cupCount += 2;
+                            });
+                          },
                           child: NumberTile(
-                            content: '2',
-                            textColor: kTileDefaultTextColor,
+                              content: '2',
+                              textColor: kTileDefaultTextColor,
+                            ),
                           ),
                         ),
                         Expanded(
-                          child: NumberTile(
-                            content: '3',
-                            textColor: kTileDefaultTextColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 3;
+                              });
+                            },
+                            child: NumberTile(
+                              content: '3',
+                              textColor: kTileDefaultTextColor,
+                            ),
                           ),
                         )
                       ],
@@ -96,9 +118,16 @@ class _HydrationScreenState extends State<HydrationScreen> {
                           ),
                         ),
                         Expanded(
-                          child: NumberTile(
-                            content: '+',
-                            textColor: kSwatchBlueColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 1;
+                              });
+                            },
+                            child: NumberTile(
+                              content: '+',
+                              textColor: kSwatchBlueColor,
+                            ),
                           ),
                         ),
                         Expanded(

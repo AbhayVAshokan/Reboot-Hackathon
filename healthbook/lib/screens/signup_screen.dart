@@ -1,6 +1,7 @@
 // Screen to implement User Sign Up
 
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../widgets/CustomIcons.dart';
 import '../widgets/SocialIcon.dart';
@@ -17,6 +18,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final DatabaseReference database = FirebaseDatabase.instance.reference();
+
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -373,36 +376,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
       onPressed: () {
         print("Routing to your account");
         setState(() {
+          for (int i = 0; i < firstNameController.text.length; i++) {
+            if (allSymbols.contains(firstNameController.text[i])) {
+              _validateFirstName = false;
+            }
+          }
           if (firstNameController.text.isEmpty) {
             _validateFirstName = false;
           } else {
             _validateFirstName = true;
           }
 
+          for (int i = 0; i < lastNameController.text.length; i++) {
+            if (allSymbols.contains(lastNameController.text[i])) {
+              _validateLastName = false;
+              return;
+            }
+          }
           if (lastNameController.text.isEmpty) {
             _validateLastName = false;
+            return;
           } else {
             _validateLastName = true;
           }
 
           if (emailController.text.isEmpty) {
             _validateEmail = false;
+            return;
           } else if (!(emailController.text.contains('@') &&
               (emailController.text.contains('.com') ||
                   emailController.text.contains('.in')))) {
             _validateEmail = false;
+            return;
           } else {
             _validateEmail = true;
           }
 
           if (mobileNumberController.text.isEmpty) {
             _validateMobileNumber = false;
+            return;
           } else {
             _validateMobileNumber = true;
           }
 
           if (mobileNumberController.text.isEmpty) {
             _validateMobileNumber = false;
+            return;
           } else if (mobileNumberController.text.length != 10) {
             _validateMobileNumber = false;
           } else {
@@ -411,16 +430,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
           if (heightController.text.isEmpty) {
             _validationHeight = false;
+            return;
           } else if (int.parse(heightController.text) < 0) {
             _validationHeight = false;
+            return;
           } else {
             _validationHeight = true;
           }
 
           if (weightController.text.isEmpty) {
             _validationWeight = false;
+            return;
           } else if (int.parse(heightController.text) < 0) {
             _validationWeight = false;
+            return;
           } else {
             _validationWeight = true;
           }
@@ -429,7 +452,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _validateConfirm = true;
           } else {
             _validateConfirm = false;
+            return;
           }
+        });
+
+        database.child("Mobile Upload").child(emailController.text).set({
+          // 'first_name': firstNameController.text,
+          // 'last_name': lastNameController.text,
+          // 'mobile_number': mobileNumberController.text,
+          // // 'password': passwordController.text,
+          // 'height': heightController.text,
+          // 'weight': weightController.text,
         });
       },
       textColor: Colors.white,
