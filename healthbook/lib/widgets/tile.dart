@@ -51,12 +51,14 @@ class Tile extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                this.title,
-                style: TextStyle(
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.w400,
-                  color: this.textColor,
+              FittedBox(
+                child: Text(
+                  this.title,
+                  style: TextStyle(
+                    fontSize: 35.0,
+                    fontWeight: FontWeight.w400,
+                    color: this.textColor,
+                  ),
                 ),
               ),
               FittedBox(

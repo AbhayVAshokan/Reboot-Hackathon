@@ -7,6 +7,10 @@ import '../widgets/constants.dart';
 class HydrationScreen extends StatefulWidget {
   @override
   _HydrationScreenState createState() => _HydrationScreenState();
+
+  final isSwitched;
+
+  HydrationScreen(this.isSwitched);
 }
 
 class _HydrationScreenState extends State<HydrationScreen> {
@@ -36,7 +40,7 @@ class _HydrationScreenState extends State<HydrationScreen> {
               height: 20.0,
             ),
             Text(
-              'Hydration',
+              widget.isSwitched ? 'ജലാംശം' : 'Hydration',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
@@ -82,13 +86,13 @@ class _HydrationScreenState extends State<HydrationScreen> {
                           ),
                         ),
                         Expanded(
-                            child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              cupCount += 2;
-                            });
-                          },
-                          child: NumberTile(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 2;
+                              });
+                            },
+                            child: NumberTile(
                               content: '2',
                               textColor: kTileDefaultTextColor,
                             ),

@@ -4,12 +4,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import '../widgets/tile.dart';
 import '../widgets/constants.dart';
 import './sleep_screen.dart';
 import './hydration_screen.dart';
-import '../widgets/text_to_speech.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,10 +20,16 @@ class HomeScreen extends StatefulWidget {
   HomeScreen({@required this.usernameController});
 }
 
+enum TtsState { playing, stopped }
+
 class _HomeScreenState extends State<HomeScreen> {
   Pedometer _pedometer;
   StreamSubscription<int> _subscription;
   String _stepCountValue;
+  static final lang = ["en_US", "ml-IN"];
+  bool isSwitched = false;
+  String engText = "We have analysed your health status";
+  String malText = "നിങ്ങളുടെ ആരോഗ്യനില ഞങ്ങൾ വിശകലനം ചെയ്തു";
 
   // Calculate calories burnt from the pedometer steps
   int caloriesBurnt() {
@@ -58,14 +64,87 @@ class _HomeScreenState extends State<HomeScreen> {
     print(_stepCountValue);
   }
 
+
+
   @override
   void initState() {
     super.initState();
+    initTts();
+  }
+
+  initTts() {
+    flutterTts = FlutterTts();
+
+    flutterTts.setStartHandler(() {
+      setState(() {
+        print("playing");
+        ttsState = TtsState.playing;
+      });
+    });
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        print("Complete");
+        print(engText);
+        ttsState = TtsState.stopped;
+      });
+    });
+
+    flutterTts.setErrorHandler((msg) {
+      setState(() {
+        print("error: $msg");
+        ttsState = TtsState.stopped;
+      });
+    });
+  }
+
+  FlutterTts flutterTts;
+  dynamic languages;
+  String language = lang[0];
+  double volume = 0.5;
+  double pitch = 1.0;
+  double engRate = 0.5;
+  double malRate = 0.45;
+
+  TtsState ttsState = TtsState.stopped;
+
+  get isPlaying => ttsState == TtsState.playing;
+
+  get isStopped => ttsState == TtsState.stopped;
+
+  Future _speak(text) async {
+    await flutterTts.setVolume(volume);
+    await flutterTts.setSpeechRate(isSwitched ? malRate : engRate);
+    await flutterTts.setPitch(pitch);
+
+    if (text != null) {
+      if (text.isNotEmpty) {
+        var result = await flutterTts.speak(text);
+        if (result == 1) setState(() => ttsState = TtsState.playing);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text("HEALTHBOOK"),
+        ),
+        backgroundColor: Colors.deepPurple,
+        actions: <Widget>[
+          Icon(Icons.sort_by_alpha),
+          Switch(
+              activeColor: Colors.white,
+              value: isSwitched,
+              onChanged: (value) {
+                setState(() {
+                  isSwitched = value;
+                });
+              })
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SafeArea(
@@ -80,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'For today',
+                        isSwitched ? 'ഇന്നത്തേക്ക്' : 'For today',
                         style: TextStyle(
                           fontSize: 40.0,
                           fontWeight: FontWeight.w500,
@@ -112,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  HydrationScreen()));
+                                                  HydrationScreen(isSwitched)));
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(20.0),
@@ -148,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     )),
                                 SizedBox(
-                                  height: 20.0,
+                                  height: 10.0,
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -156,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SleepScreen()));
+                                                SleepScreen(isSwitched)));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(20.0),
@@ -196,8 +275,40 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(
-                            width: 20.0,
+                            width: 10.0,
                           ),
+                          Expanded(
+                            flex: 1,
+                            child: Tile(
+                              backgroundColor: Colors.teal,
+                              borderColor: Colors.teal,
+                              textColor: Colors.white,
+                              title: '10',
+                              subtitle: isSwitched ? 'ബിഎംഐ' : 'BMI',
+                              icon: Icons.access_time,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Tile(
+                              backgroundColor: Colors.indigo,
+                              borderColor: Colors.indigo,
+                              textColor: Colors.white,
+                              title: _stepCountValue.toString(),
+                              subtitle: isSwitched ? 'ചുവടുകൾ' : 'steps',
+                              icon: Icons.directions_walk,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: <Widget>[
                           Expanded(
                             flex: 2,
                             child: Tile(
@@ -209,57 +320,55 @@ class _HomeScreenState extends State<HomeScreen> {
                               icon: Icons.airline_seat_legroom_normal,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: Tile(
-                              backgroundColor: Colors.indigo,
-                              borderColor: Colors.indigo,
-                              textColor: Colors.white,
-                              title: _stepCountValue.toString(),
-                              subtitle: 'steps',
-                              icon: Icons.directions_walk,
-                            ),
-                          ),
-                          SizedBox(width: 20.0),
-                          Expanded(
-                            flex: 1,
-                            child: Tile(
-                              backgroundColor: Colors.amber,
-                              borderColor: Colors.amber,
-                              textColor: Colors.white,
-                              title: '100',
-                              subtitle: 'percent',
-                              icon: Icons.wb_sunny,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Row(
-                        children: <Widget>[
+                          SizedBox(width: 10.0),
                           Expanded(
                             child: Tile(
                               backgroundColor: Colors.lightGreen,
                               borderColor: Colors.lightGreen,
                               textColor: Colors.white,
                               title: caloriesBurnt().toString(),
-                              subtitle: 'cal',
+                              subtitle: isSwitched ? 'കലോറി' : 'cal',
                               icon: Icons.fastfood,
                             ),
                           ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 3,
+                            child: Tile(
+                              backgroundColor: Colors.amber,
+                              borderColor: Colors.amber,
+                              textColor: Colors.white,
+                              title: '100',
+                              subtitle: isSwitched ? 'ശതമാനം' : 'percent',
+                              icon: Icons.wb_sunny,
+                            ),
+                          ),
                           SizedBox(
-                            width: 20.0,
+                            width: 10.0,
                           ),
                           Expanded(
+                            flex: 2,
+                            child: Tile(
+                              backgroundColor: Colors.indigoAccent,
+                              borderColor: Colors.indigoAccent,
+                              textColor: Colors.white,
+                              title: '12',
+                              subtitle:
+                                  isSwitched ? 'കണ്ണ് ചിമ്മുന്നു' : 'blinks pm',
+                              icon: Icons.wb_sunny,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Expanded(
+                            flex: 3,
                             child: Tile(
                               backgroundColor: kSwatchPinkColor,
                               borderColor: kSwatchPinkColor,
@@ -284,20 +393,15 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 65,
         child: FittedBox(
           child: FloatingActionButton(
-            child: Icon(Icons.trending_up),
+            child: Icon(Icons.play_arrow),
             backgroundColor: Colors.amber,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return TextToSpeech(
-                    text:
-                        "Hello World! My name is Ajay James. I am cool. Oh Yeah!",
-                    language: "en-US");
-              }));
+              _speak(isSwitched ? malText : engText);
             },
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
     );
   }
 }

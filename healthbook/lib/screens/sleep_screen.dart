@@ -7,6 +7,10 @@ import '../widgets/constants.dart';
 class SleepScreen extends StatefulWidget {
   @override
   _SleepScreenState createState() => _SleepScreenState();
+
+  final isSwitched;
+
+  SleepScreen(this.isSwitched);
 }
 
 class _SleepScreenState extends State<SleepScreen> {
@@ -36,7 +40,7 @@ class _SleepScreenState extends State<SleepScreen> {
               height: 20.0,
             ),
             Text(
-              'Sleep (weekly)',
+              widget.isSwitched ? 'ഉറക്കം (പ്രതിവാരം)' : 'Sleep (weekly)',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
