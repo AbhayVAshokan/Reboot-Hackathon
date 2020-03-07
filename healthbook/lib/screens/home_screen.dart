@@ -7,17 +7,32 @@ import 'package:pedometer/pedometer.dart';
 
 import '../widgets/tile.dart';
 import '../widgets/constants.dart';
-import 'hydration_screen.dart';
+import './sleep_screen.dart';
+import './hydration_screen.dart';
+import '../widgets/text_to_speech.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
+
+  final usernameController;
+
+  HomeScreen({@required this.usernameController});
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   Pedometer _pedometer;
   StreamSubscription<int> _subscription;
   String _stepCountValue;
+
+  // Calculate calories burnt from the pedometer steps
+  int caloriesBurnt() {
+    if (_stepCountValue == null)
+      return null;
+    else {
+      return (int.parse(_stepCountValue) * 0.57 * 2.20462 * 55).toInt();
+    }
+  }
 
   // Pedometer functions
   void onData(int stepCountValue) {
@@ -41,21 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onData(int stepCountValue) async {
     setState(() => _stepCountValue = "$stepCountValue");
     print(_stepCountValue);
-  }
-
-  // Bottom navigation to display the live graph
-  void _showBottomNavigation(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.black87,
-        context: context,
-        builder: (_) {
-          return Container(
-            height: 500,
-            child: Center(
-              child: Text('Hello World'),
-            ),
-          );
-        });
   }
 
   @override
@@ -150,37 +150,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(
                                   height: 20.0,
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  height: 77.5,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Color.fromRGBO(38, 0, 29, 1),
-                                        style: BorderStyle.solid,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    color: Color.fromRGBO(38, 0, 29, 1),
-                                  ),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity:
-                                                Icons.surround_sound != null
-                                                    ? 1.0
-                                                    : 0.0,
-                                            child: Icon(
-                                              Icons.star,
-                                              color: Colors.white,
-                                              size: 30,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SleepScreen()));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(20.0),
+                                    height: 77.5,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Color.fromRGBO(38, 0, 29, 1),
+                                          style: BorderStyle.solid,
+                                          width: 2.0),
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      color: Color.fromRGBO(38, 0, 29, 1),
+                                    ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity:
+                                                  Icons.surround_sound != null
+                                                      ? 1.0
+                                                      : 0.0,
+                                              child: Icon(
+                                                Icons.star,
+                                                color: Colors.white,
+                                                size: 30,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],
@@ -242,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.lightGreen,
                               borderColor: Colors.lightGreen,
                               textColor: Colors.white,
-                              title: '28',
+                              title: caloriesBurnt().toString(),
                               subtitle: 'cal',
                               icon: Icons.fastfood,
                             ),
@@ -278,7 +287,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.trending_up),
             backgroundColor: Colors.amber,
             onPressed: () {
-              _showBottomNavigation(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return TextToSpeech(
+                    text:
+                        "Hello World! My name is Ajay James. I am cool. Oh Yeah!",
+                    language: "en-US");
+              }));
             },
           ),
         ),

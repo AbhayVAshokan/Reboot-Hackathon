@@ -29,13 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _medium;
 
   // Variables to check whether the contents are entered or not
-  bool _validateFirstName = true,
-      _validateLastName = true,
-      _validateEmail = true,
-      _validateMobileNumber = true,
-      _validationHeight = true,
-      _validationWeight = true,
-      _validateConfirm = true;
+  bool _validateFirstName = false,
+      _validateLastName = false,
+      _validateEmail = false,
+      _validateMobileNumber = false,
+      _validationHeight = false,
+      _validationWeight = false,
+      _validateConfirm = false;
 
   // TextEditingControllers for all textFields.
   final passwordController = TextEditingController();
@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final mobileNumberController = TextEditingController();
   var gender = "Male";
-  var  key = 3;
+  var key = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +127,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
-                image: gender == "Male" ? AssetImage('lib/assets/images/man_face.jpeg') : AssetImage('lib/assets/images/lady_face.png'),
-
+                image: gender == "Male"
+                    ? AssetImage('lib/assets/images/man_face.jpeg')
+                    : AssetImage('lib/assets/images/lady_face.png'),
               ),
               boxShadow: [
                 BoxShadow(
@@ -141,8 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               shape: BoxShape.circle,
             ),
             child: GestureDetector(
-              onTap: () {
-              },
+              onTap: () {},
             ),
           ),
         ),
@@ -385,10 +385,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           for (int i = 0; i < firstNameController.text.length; i++) {
             if (allSymbols.contains(firstNameController.text[i])) {
               _validateFirstName = false;
+              return;
             }
           }
           if (firstNameController.text.isEmpty) {
             _validateFirstName = false;
+            return;
           } else {
             _validateFirstName = true;
           }
@@ -462,12 +464,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
         });
 
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        print(_validateConfirm);
+
+        if (_validateConfirm &&
+            _validateEmail &&
+            _validateFirstName &&
+            _validateLastName &&
+            _validateMobileNumber &&
+            _validationHeight &&
+            _validationWeight) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                usernameController: emailController,
+              ),
+            ),
+          );
+        }
 
         String encrypt(String pattern, int key) {
           final encryptedString = pattern.split('');
-          for(int i=0; i<pattern.length; i++) {
-              encryptedString[i] = String.fromCharCode(((pattern.codeUnitAt(i)+ key)));
+          for (int i = 0; i < pattern.length; i++) {
+            encryptedString[i] =
+                String.fromCharCode(((pattern.codeUnitAt(i) + key)));
           }
           return encryptedString.join('');
         }

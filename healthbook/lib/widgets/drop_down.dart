@@ -8,14 +8,14 @@ class Item {
 
 List<Item> users = <Item>[
   const Item(
-    'Male',
+    'Male (പുരുഷൻ)',
     Icon(
       Icons.person,
       color: const Color(0xFF167F67),
     ),
   ),
   const Item(
-    'Female',
+    'Female (സ്ത്രീ)',
     Icon(
       Icons.person_pin_circle,
       color: const Color(0xFF167F67),

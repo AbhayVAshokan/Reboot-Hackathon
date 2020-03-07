@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:toast/toast.dart';
 
 import '../widgets/FormCard.dart';
 import '../widgets/SocialIcon.dart';
@@ -15,11 +17,65 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final DatabaseReference database = FirebaseDatabase.instance.reference();
+  var usernameController = TextEditingController();
+  var passwordController = TextEditingController();
+
   bool _isSelected = false;
+  bool validatedUsername = false;
 
   void _radio() {
     setState(() {
       _isSelected = !_isSelected;
+    });
+  }
+
+  void getData() {
+    String username = usernameController.text;
+    if (!username.contains('@') ||
+        !(username.contains('.com') || username.contains('.in'))) {
+      validatedUsername = false;
+      Toast.show("Enter valid email id", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+      return;
+    }
+
+  String decrypt(String password) {
+    for(int i=0; i<password.length; i++) {
+      
+    }
+  }
+
+    bool checkPassword(String username, String password) {
+      database.once().then((DataSnapshot snapshot) {
+        String originalPassword =
+            decrypt(snapshot.value[username].child('password'));
+        if (originalPassword.compareTo(password) == 0) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      return false;
+    }
+
+    username = username.split('@')[0];
+    print(username);
+
+    database.once().then((DataSnapshot snapshot) {
+      print(username);
+      if (snapshot.value[username] != null) {
+        validatedUsername = true;
+        if (checkPassword(username, passwordController.text)) {
+          return;
+        } else {
+          Toast.show("Invalid username or password", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+        }
+      } else {
+        Toast.show("Invalid username or password", context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+      }
     });
   }
 
@@ -106,7 +162,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: ScreenUtil.getInstance().setHeight(180),
                         ),
-                        FormCard(),
+                        FormCard(
+                          passwordController: passwordController,
+                          usernameController: usernameController,
+                        ),
                         SizedBox(
                           height: ScreenUtil.getInstance().setHeight(35),
                         ),
@@ -154,11 +213,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.transparent,
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomeScreen()));
+                                      getData();
+                                      validatedUsername
+                                          ? Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen(
+                                                  usernameController:
+                                                      usernameController,
+                                                ),
+                                              ),
+                                            )
+                                          : LoginScreen();
                                     },
                                     child: Center(
                                       child: Text(
@@ -241,7 +308,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUpScreen()));
                               },
                               child: Text('SignUp',
                                   style: TextStyle(

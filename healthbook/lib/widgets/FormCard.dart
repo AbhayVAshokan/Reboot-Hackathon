@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class FormCard extends StatelessWidget {
+class FormCard extends StatefulWidget {
+  @override
+  _FormCardState createState() => _FormCardState();
+  final usernameController, passwordController;
+
+  FormCard({this.usernameController, this.passwordController});
+}
+
+class _FormCardState extends State<FormCard> {
+  final DatabaseReference database = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,9 +64,8 @@ class FormCard extends StatelessWidget {
               ),
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Enter Username',
+                  hintText: 'Enter Username (ഉപയോക്തൃനാമം നൽകുക)',
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
-
                 ),
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(
@@ -63,6 +73,7 @@ class FormCard extends StatelessWidget {
                   ),
                 ),
                 keyboardType: TextInputType.emailAddress,
+                controller: widget.usernameController,
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
@@ -79,7 +90,7 @@ class FormCard extends StatelessWidget {
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                  hintText: 'Enter Password',
+                  hintText: 'Enter Password (പാസ്വേഡ് നല്കൂ)',
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
                 ),
                 style: GoogleFonts.lato(
@@ -87,6 +98,7 @@ class FormCard extends StatelessWidget {
                     fontSize: ScreenUtil.getInstance().setSp(30),
                   ),
                 ),
+                controller: widget.passwordController,
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(35),
