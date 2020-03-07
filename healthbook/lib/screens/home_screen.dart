@@ -59,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-    void initState() {
-      super.initState();
-    }
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,22 +104,86 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         children: <Widget>[
                           Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            HydrationScreen()));
-                              },
-                              child: Tile(
-                                backgroundColor: kSwatchBlueColor,
-                                borderColor: kSwatchBlueColor,
-                                textColor: Colors.white,
-                                icon: Icons.opacity,
-                                title: '4',
-                                subtitle: 'cups',
-                              ),
+                            child: Column(
+                              children: <Widget>[
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HydrationScreen()));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20.0),
+                                      height: 77.5,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: kSwatchBlueColor,
+                                            style: BorderStyle.solid,
+                                            width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                        color: kSwatchBlueColor,
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Opacity(
+                                                opacity: Icons.opacity != null
+                                                    ? 1.0
+                                                    : 0.0,
+                                                child: Icon(
+                                                  Icons.opacity,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  height: 77.5,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color.fromRGBO(38, 0, 29, 1),
+                                        style: BorderStyle.solid,
+                                        width: 2.0),
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Color.fromRGBO(38, 0, 29, 1),
+                                  ),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Opacity(
+                                            opacity:
+                                                Icons.surround_sound != null
+                                                    ? 1.0
+                                                    : 0.0,
+                                            child: Icon(
+                                              Icons.star,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -197,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

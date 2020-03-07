@@ -71,6 +71,7 @@ flutter:
     - family: CustomIcons
       fonts:
         - asset: lib/assets/fonts/CustomIcons.ttf
+        - asset: lib/assets/fonts/CustomIcons2.ttf
 
     - family: Signika
       fonts:

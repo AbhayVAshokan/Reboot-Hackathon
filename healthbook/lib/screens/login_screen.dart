@@ -7,6 +7,7 @@ import '../widgets/SocialIcon.dart';
 import '../widgets/CustomIcons.dart';
 import './home_screen.dart';
 import './signup_screen.dart';
+import './set_goals.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

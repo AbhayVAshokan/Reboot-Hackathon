@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:healthbook/screens/home_screen.dart';
 
 import '../widgets/CustomIcons.dart';
 import '../widgets/SocialIcon.dart';
@@ -46,6 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final mobileNumberController = TextEditingController();
   var gender = "Male";
+  var  key = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -117,27 +119,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-        Container(
-          height: _height / 5.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 0.0,
-                  color: Colors.black26,
-                  offset: Offset(1.0, 10.0),
-                  blurRadius: 20.0),
-            ],
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: GestureDetector(
-            onTap: () {
-              // getImage();
-            },
-            child: gender == "Male"
-                ? Image.asset('healthbook/lib/assets/images/man_face.jpeg')
-                : Image.asset('healthbook/lib/assets/images/female_face.png'),
+        Center(
+          child: Container(
+            height: _height / 5.5,
+            width: _height / 5.5,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: gender == "Male" ? AssetImage('lib/assets/images/man_face.jpeg') : AssetImage('lib/assets/images/lady_face.png'),
+
+              ),
+              boxShadow: [
+                BoxShadow(
+                    spreadRadius: 0.0,
+                    color: Colors.black26,
+                    offset: Offset(1.0, 10.0),
+                    blurRadius: 20.0),
+              ],
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: GestureDetector(
+              onTap: () {
+              },
+            ),
           ),
         ),
       ],
@@ -456,13 +462,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
         });
 
-        database.child("Mobile Upload").child(emailController.text).set({
-          // 'first_name': firstNameController.text,
-          // 'last_name': lastNameController.text,
-          // 'mobile_number': mobileNumberController.text,
-          // // 'password': passwordController.text,
-          // 'height': heightController.text,
-          // 'weight': weightController.text,
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+        String encrypt(String pattern, int key) {
+          final encryptedString = pattern.split('');
+          for(int i=0; i<pattern.length; i++) {
+              encryptedString[i] = String.fromCharCode(((pattern.codeUnitAt(i)+ key)));
+          }
+          return encryptedString.join('');
+        }
+
+        database.child(emailController.text.split('@')[0]).set({
+          'first_name': firstNameController.text,
+          'last_name': lastNameController.text,
+          'mobile_number': mobileNumberController.text,
+          'password': encrypt(passwordController.text, key),
+          'height': heightController.text,
+          'weight': weightController.text,
         });
       },
       textColor: Colors.white,

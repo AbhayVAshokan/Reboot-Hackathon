@@ -9,20 +9,22 @@ class Tile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
+  final double height;
 
   Tile(
       {this.backgroundColor,
       this.borderColor,
       this.textColor,
       this.icon,
-      this.title,
-      this.subtitle});
+      this.title = "",
+      this.subtitle = "",
+      this.height = 175.0});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20.0),
-      height: 175.0,
+      height: height,
       decoration: BoxDecoration(
         border: Border.all(
             color: this.borderColor, style: BorderStyle.solid, width: 2.0),
