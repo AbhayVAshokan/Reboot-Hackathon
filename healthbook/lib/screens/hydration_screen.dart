@@ -1,6 +1,9 @@
 // Screen to display contents of amount of water consumed.
 
+// import 'package:firebase';
 import 'package:flutter/material.dart';
+
+
 import '../widgets/number_tile.dart';
 import '../widgets/constants.dart';
 
@@ -8,13 +11,20 @@ class HydrationScreen extends StatefulWidget {
   @override
   _HydrationScreenState createState() => _HydrationScreenState();
 
-  final isSwitched;
+  final isSwitched, hydration;
 
-  HydrationScreen(this.isSwitched);
+  HydrationScreen(this.isSwitched, this.hydration);
 }
 
 class _HydrationScreenState extends State<HydrationScreen> {
   var cupCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    cupCount = widget.hydration;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,30 +126,44 @@ class _HydrationScreenState extends State<HydrationScreen> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          child: NumberTile(
-                            content: '4',
-                            textColor: kTileDefaultTextColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 4;
+                              });
+                            },
+                            child: NumberTile(
+                              content: '4',
+                              textColor: kTileDefaultTextColor,
+                            ),
                           ),
                         ),
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                cupCount += 1;
+                                cupCount += 5;
                               });
                             },
                             child: NumberTile(
-                              content: '+',
-                              textColor: kSwatchBlueColor,
+                              content: '5',
+                              textColor: kTileDefaultTextColor,
                             ),
                           ),
                         ),
                         Expanded(
-                          child: NumberTile(
-                            content: '',
-                            textColor: kTileDefaultTextColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cupCount += 6;
+                              });
+                            },
+                            child: NumberTile(
+                              content: '6',
+                              textColor: kTileDefaultTextColor,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],

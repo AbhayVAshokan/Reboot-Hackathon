@@ -1,4 +1,4 @@
-// Screen to display contents of amount of water consumed.
+// Screen to display hours of sleep every week.
 
 import 'package:flutter/material.dart';
 import '../widgets/number_tile.dart';
@@ -48,7 +48,7 @@ class _SleepScreenState extends State<SleepScreen> {
               ),
             ),
             Text(
-              '$cupCount of 45',
+              '$cupCount of 53',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

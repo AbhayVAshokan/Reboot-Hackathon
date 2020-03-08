@@ -29,13 +29,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _medium;
 
   // Variables to check whether the contents are entered or not
-  bool _validateFirstName = false,
-      _validateLastName = false,
-      _validateEmail = false,
-      _validateMobileNumber = false,
-      _validationHeight = false,
-      _validationWeight = false,
-      _validateConfirm = false;
+  bool _validateFirstName = true,
+      _validateLastName = true,
+      _validateEmail = true,
+      _validateMobileNumber = true,
+      _validationHeight = true,
+      _validationWeight = true,
+      _validateConfirm = true;
 
   // TextEditingControllers for all textFields.
   final passwordController = TextEditingController();
@@ -214,6 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Text(
                       user.name,
                       style: TextStyle(color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -383,7 +384,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         print("Routing to your account");
         setState(() {
           for (int i = 0; i < firstNameController.text.length; i++) {
-            if (allSymbols.contains(firstNameController.text[i])) {
+            if (allSymbols.contains(firstNameController.text[i]) || firstNameController.text.contains('  ')) {
               _validateFirstName = false;
               return;
             }
@@ -396,7 +397,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           }
 
           for (int i = 0; i < lastNameController.text.length; i++) {
-            if (allSymbols.contains(lastNameController.text[i])) {
+            if (allSymbols.contains(lastNameController.text[i]) || lastNameController.text.contains('  ')) {
               _validateLastName = false;
               return;
             }
@@ -497,8 +498,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'last_name': lastNameController.text,
           'mobile_number': mobileNumberController.text,
           'password': encrypt(passwordController.text, key),
-          'height': heightController.text,
           'weight': weightController.text,
+          'height': heightController.text,
+          'bmi': double.parse(weightController.text) /
+              ((double.parse(heightController.text) / 100) *
+                  ((double.parse(heightController.text) / 100))),
+          'cups_of_water': '0',
+          'sleep': '0',
+          'pedometer': '0',
+          'posture': '0',
+          'cal': '0',
+          'brightness': '100',
+          'avgblinkrate': '0',
+          'bpm': 0,
         });
       },
       textColor: Colors.white,

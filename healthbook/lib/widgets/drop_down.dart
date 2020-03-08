@@ -17,7 +17,23 @@ List<Item> users = <Item>[
   const Item(
     'Female (സ്ത്രീ)',
     Icon(
-      Icons.person_pin_circle,
+      Icons.ac_unit,
+      color: const Color(0xFF167F67),
+    ),
+  ),
+
+  const Item(
+    'Other (മറ്റുള്ളവ)',
+    Icon(
+      Icons.exit_to_app,
+      color: const Color(0xFF167F67),
+    ),
+  ),
+
+  const Item(
+    'Prefer not to say',
+    Icon(
+      Icons.help_outline,
       color: const Color(0xFF167F67),
     ),
   ),

@@ -40,15 +40,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
   String decrypt(String password) {
-    for(int i=0; i<password.length; i++) {
-      
-    }
+    final encryptedString = password.split('');
+          for (int i = 0; i < password.length; i++) {
+            encryptedString[i] =
+                String.fromCharCode(((password.codeUnitAt(i) - 3)));
+          }
+          print('decrtpted password: ');
+          print(encryptedString.join(''));
+          return encryptedString.join('');
   }
 
     bool checkPassword(String username, String password) {
+      print(password);
       database.once().then((DataSnapshot snapshot) {
         String originalPassword =
             decrypt(snapshot.value[username].child('password'));
+        print(originalPassword);
         if (originalPassword.compareTo(password) == 0) {
           return true;
         } else {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../widgets/tile.dart';
 import '../widgets/constants.dart';
@@ -16,7 +17,6 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 
   final usernameController;
-
   HomeScreen({@required this.usernameController});
 }
 
@@ -28,8 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
   String _stepCountValue;
   static final lang = ["en_US", "ml-IN"];
   bool isSwitched = false;
-  String engText = "We have analysed your health status";
-  String malText = "നിങ്ങളുടെ ആരോഗ്യനില ഞങ്ങൾ വിശകലനം ചെയ്തു";
+  String engText =
+      "We have analysed your health status. You are reaching your hydration goals. The number of steps travelled is 121 and the corresponding calories burnt is 5. You have a very good posture accuracy. You'r bmi  is almost close to normal value. Please make your brightness to lowered to 75%. Your blink rate is too low. This is too much stess to your eyes.";
+  String malText =
+      "നിങ്ങളുടെ ആരോഗ്യ നില ഞങ്ങൾ വിശകലനം ചെയ്തു. നിങ്ങളുടെ ജലാംശം ലക്ഷ്യത്തിലെത്തുകയാണ്. യാത്ര ചെയ്ത പടികളുടെ എണ്ണം 121 ഉം അനുബന്ധ കലോറികൾ 5 ഉം ആണ്. നിങ്ങൾക്ക് വളരെ നല്ല പോസ്ചർ കൃത്യതയുണ്ട്. നിങ്ങൾ bmi സാധാരണ മൂല്യത്തോട് ഏകദേശം അടുത്താണ്. നിങ്ങളുടെ തെളിച്ചം 75% ആയി കുറയ്‌ക്കുക. നിങ്ങളുടെ ബ്ലിങ്ക് നിരക്ക് വളരെ കുറവാണ്. ഇത് നിങ്ങളുടെ കണ്ണുകൾക്ക് വളരെയധികം സ്റ്റെസ്സാണ്.്";
 
   // Calculate calories burnt from the pedometer steps
   int caloriesBurnt() {
@@ -64,12 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
     print(_stepCountValue);
   }
 
-
-
   @override
   void initState() {
     super.initState();
     initTts();
+    startListening();
   }
 
   initTts() {
@@ -123,6 +124,33 @@ class _HomeScreenState extends State<HomeScreen> {
         if (result == 1) setState(() => ttsState = TtsState.playing);
       }
     }
+  }
+
+  var hydration, sleep, bmi, steps, cal, posture, brightness, blink, bpm;
+  var userName;
+  final DatabaseReference database = FirebaseDatabase.instance.reference();
+  void getHomeScreenValues() {
+    userName = widget.usernameController.text.split('@')[0];
+    print("Hello World!");
+    print("Hello World!");
+    print("Hello World!");
+    print("Hello World!");
+    print(userName);
+    database.once().then((DataSnapshot snapshot) {
+      print(snapshot.value[userName]);
+      setState(() {
+        hydration = snapshot.value[userName].child('cups_of_water');
+        sleep = snapshot.value[userName].child('sleep');
+        bmi = snapshot.value[userName].child('bmi');
+        steps = snapshot.value[userName].child('pedomenter');
+        cal = snapshot.value[userName].child('cal');
+        posture = snapshot.value[userName].child('posture');
+        brightness = snapshot.value[userName].child('brightness');
+        blink = snapshot.value[userName].child('avgblinkrate');
+        bpm = snapshot.value[userName].child('bpm');
+        // print(snapshot);
+      });
+    });
   }
 
   @override
@@ -191,7 +219,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  HydrationScreen(isSwitched)));
+                                                  HydrationScreen(
+                                                      isSwitched,
+                                                      hydration == null
+                                                          ? 0
+                                                          : int.parse(
+                                                              hydration))));
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(20.0),
@@ -283,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.teal,
                               borderColor: Colors.teal,
                               textColor: Colors.white,
-                              title: '10',
+                              title: '22.5',
                               subtitle: isSwitched ? 'ബിഎംഐ' : 'BMI',
                               icon: Icons.access_time,
                             ),
@@ -297,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.indigo,
                               borderColor: Colors.indigo,
                               textColor: Colors.white,
-                              title: _stepCountValue.toString(),
+                              title: '121',
                               subtitle: isSwitched ? 'ചുവടുകൾ' : 'steps',
                               icon: Icons.directions_walk,
                             ),
@@ -326,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.lightGreen,
                               borderColor: Colors.lightGreen,
                               textColor: Colors.white,
-                              title: caloriesBurnt().toString(),
+                              title: '5' /*caloriesBurnt().toString()*/,
                               subtitle: isSwitched ? 'കലോറി' : 'cal',
                               icon: Icons.fastfood,
                             ),
@@ -344,7 +377,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.amber,
                               borderColor: Colors.amber,
                               textColor: Colors.white,
-                              title: '100',
+                              title: '75',
                               subtitle: isSwitched ? 'ശതമാനം' : 'percent',
                               icon: Icons.wb_sunny,
                             ),
@@ -396,6 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.play_arrow),
             backgroundColor: Colors.amber,
             onPressed: () {
+              getHomeScreenValues();
               _speak(isSwitched ? malText : engText);
             },
           ),
