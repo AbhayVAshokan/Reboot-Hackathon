@@ -29,9 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   static final lang = ["en_US", "ml-IN"];
   bool isSwitched = false;
   String engText =
-      "We have analysed your health status. You are reaching your hydration goals. The number of steps travelled is 121 and the corresponding calories burnt is 5. You have a very good posture accuracy. You'r bmi  is almost close to normal value. Please make your brightness to lowered to 75%. Your blink rate is too low. This is too much stess to your eyes.";
-  String malText =
-      "നിങ്ങളുടെ ആരോഗ്യ നില ഞങ്ങൾ വിശകലനം ചെയ്തു. നിങ്ങളുടെ ജലാംശം ലക്ഷ്യത്തിലെത്തുകയാണ്. യാത്ര ചെയ്ത പടികളുടെ എണ്ണം 121 ഉം അനുബന്ധ കലോറികൾ 5 ഉം ആണ്. നിങ്ങൾക്ക് വളരെ നല്ല പോസ്ചർ കൃത്യതയുണ്ട്. നിങ്ങൾ bmi സാധാരണ മൂല്യത്തോട് ഏകദേശം അടുത്താണ്. നിങ്ങളുടെ തെളിച്ചം 75% ആയി കുറയ്‌ക്കുക. നിങ്ങളുടെ ബ്ലിങ്ക് നിരക്ക് വളരെ കുറവാണ്. ഇത് നിങ്ങളുടെ കണ്ണുകൾക്ക് വളരെയധികം സ്റ്റെസ്സാണ്.്";
+      "We have analysed your health status. You are reaching your hydration goals. The number of steps travelled is 0 and the corresponding calories burnt is 0 cal. You have a very good posture accuracy. You'r bmi  is almost close to normal value. Please make your brightness to lowered to 75%. Your blink rate is too low. This is too much stess to your eyes.";
+  String malText = "നിങ്ങളുടെ ആരോഗ്യ നില ഞങ്ങൾ വിശകലനം ചെയ്തു. നിങ്ങളുടെ ജലാംശം ലക്ഷ്യത്തിലെത്തുകയാണ്. യാത്ര ചെയ്ത പടികളുടെ എണ്ണം 0 ഉം അനുബന്ധ കലോറികൾ 0 ഉം ആണ്. നിങ്ങൾക്ക് വളരെ നല്ല പോസ്ചർ കൃത്യതയുണ്ട്. നിങ്ങൾ bmi സാധാരണ മൂല്യത്തോട് ഏകദേശം അടുത്താണ്. നിങ്ങളുടെ തെളിച്ചം 75% ആയി കുറയ്‌ക്കുക. നിങ്ങളുടെ ബ്ലിങ്ക് നിരക്ക് വളരെ കുറവാണ്. ഇത് നിങ്ങളുടെ കണ്ണുകൾക്ക് വളരെയധികം സ്റ്റെസ്സാണ്.്";
 
   // Calculate calories burnt from the pedometer steps
   int caloriesBurnt() {
@@ -70,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     initTts();
-    startListening();
   }
 
   initTts() {
@@ -316,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.teal,
                               borderColor: Colors.teal,
                               textColor: Colors.white,
-                              title: '22.5',
+                              title: '0',
                               subtitle: isSwitched ? 'ബിഎംഐ' : 'BMI',
                               icon: Icons.access_time,
                             ),
@@ -330,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.indigo,
                               borderColor: Colors.indigo,
                               textColor: Colors.white,
-                              title: '121',
+                              title: '0',
                               subtitle: isSwitched ? 'ചുവടുകൾ' : 'steps',
                               icon: Icons.directions_walk,
                             ),
@@ -348,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.pinkAccent,
                               borderColor: Colors.pinkAccent,
                               textColor: Colors.white,
-                              title: '85.35',
+                              title: '0',
                               subtitle: '%',
                               icon: Icons.airline_seat_legroom_normal,
                             ),
@@ -359,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.lightGreen,
                               borderColor: Colors.lightGreen,
                               textColor: Colors.white,
-                              title: '5' /*caloriesBurnt().toString()*/,
+                              title: '0' /*caloriesBurnt().toString()*/,
                               subtitle: isSwitched ? 'കലോറി' : 'cal',
                               icon: Icons.fastfood,
                             ),
@@ -377,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.amber,
                               borderColor: Colors.amber,
                               textColor: Colors.white,
-                              title: '75',
+                              title: '100',
                               subtitle: isSwitched ? 'ശതമാനം' : 'percent',
                               icon: Icons.wb_sunny,
                             ),
@@ -391,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.indigoAccent,
                               borderColor: Colors.indigoAccent,
                               textColor: Colors.white,
-                              title: '12',
+                              title: '0',
                               subtitle:
                                   isSwitched ? 'കണ്ണ് ചിമ്മുന്നു' : 'blinks pm',
                               icon: Icons.wb_sunny,
@@ -407,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderColor: kSwatchPinkColor,
                               textColor: Colors.white,
                               icon: Icons.favorite,
-                              title: '118',
+                              title: '0',
                               subtitle: 'bpm',
                             ),
                           ),
